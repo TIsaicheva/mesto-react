@@ -2,15 +2,14 @@
 // import './App.css';
 import Header from './Header';
 import Main from './Main';
+import Footer from './Footer';
 
 function App() {
   return (
     <div className="root">
         <Header />
-        <Main />   
-        <footer className="footer">
-            <p className="footer__copyright">© 2020 Mesto Russia</p>
-        </footer>
+        <Main />
+        <Footer />
         <div className="popup popup-edit">
             <div className="popup__container">
                 <button type="button" aria-label="Закрыть попап"
