@@ -1,35 +1,57 @@
-function Main() {
-    function handleEditAvatarClick() {
-        const popup = document.querySelector('.popup-edit-avatar');
-        popup.classList.add('popup_opened');
-    }
+import React from 'react';
+import api from '../utils/api.js';
+import Card from './Card';
 
-    function handleEditProfileClick() {
-        const popup = document.querySelector('.popup-edit');
-        popup.classList.add('popup_opened');
-    }
+function Main(props) {
+    const [userName, setUserName] = React.useState('');
+    const [userDescription, setUserDescription] = React.useState('');
+    const [userAvatar, setUserAvatar] = React.useState('');
+    const [cards, setCards] = React.useState([]);
 
-    function handleAddPlaceClick() {
-        const popup = document.querySelector('.popup-add');
-        popup.classList.add('popup_opened');
-    }
+    React.useEffect(() => {
+        Promise.all([            
+            api.getUserInfo(),
+            api.getInitialCards()
+        ])
+            .then((values) => {
+                const [userInfo, initialCards] = values;
+                setUserName(userInfo.name);
+                setUserDescription(userInfo.about);
+                setUserAvatar(userInfo.avatar);
+                setCards(initialCards.map(item =>
+                    ({
+                        id: item._id,
+                        name: item.name,
+                        link: item.link,
+                        likes: item.likes.length
+                    })
+                ));
+            })
+            .catch((err) => console.log(err));
+    }, []);
 
     return (
         <>
             <section className="profile">
                 <div className="profile__data">
-                    <div className="profile__avatar" onClick={handleEditAvatarClick}></div>
+                    <div className="profile__avatar"
+                        onClick={props.onEditAvatar}
+                        style={{ backgroundImage: `url(${userAvatar})` }}
+                    ></div>
                     <div className="profile__info">
-                        <h1 className="profile__info-title">Жак-Ив Кусто</h1>
+                        <h1 className="profile__info-title">{userName}</h1>
                         <button className="profile__info-edit-button form-button"
-                            type="button" onClick={handleEditProfileClick}></button>
-                        <p className="profile__info-subtitle">Исследователь океана</p>
+                            type="button" onClick={props.onEditProfile}></button>
+                        <p className="profile__info-subtitle">{userDescription}</p>
                     </div>
                 </div>
-                <button className="profile__add-button form-button" type="button" onClick={handleAddPlaceClick}></button>
+                <button className="profile__add-button form-button" type="button" onClick={props.onAddPlace}></button>
             </section>
             <section className="gallery">
                 <ul className="gallery__items">
+                    {
+                        cards.map((card) => <Card key={card.id} card={card} onCardClick={props.onCardClick} />)
+                    }
                 </ul>
             </section>
         </>
