@@ -9,7 +9,7 @@ function Main(props) {
     const [cards, setCards] = React.useState([]);
 
     React.useEffect(() => {
-        Promise.all([            
+        Promise.all([
             api.getUserInfo(),
             api.getInitialCards()
         ])
@@ -18,14 +18,7 @@ function Main(props) {
                 setUserName(userInfo.name);
                 setUserDescription(userInfo.about);
                 setUserAvatar(userInfo.avatar);
-                setCards(initialCards.map(item =>
-                    ({
-                        id: item._id,
-                        name: item.name,
-                        link: item.link,
-                        likes: item.likes.length
-                    })
-                ));
+                setCards(initialCards);
             })
             .catch((err) => console.log(err));
     }, []);
@@ -50,7 +43,17 @@ function Main(props) {
             <section className="gallery">
                 <ul className="gallery__items">
                     {
-                        cards.map((card) => <Card key={card.id} card={card} onCardClick={props.onCardClick} />)
+                        cards.map((card) =>
+                            <
+                                Card key={card._id}
+                                card={({
+                                    name: card.name,
+                                    link: card.link,
+                                    likes: card.likes.length
+                                })}
+                                onCardClick={props.onCardClick}
+                            />
+                        )
                     }
                 </ul>
             </section>
