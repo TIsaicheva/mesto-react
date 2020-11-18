@@ -5,7 +5,7 @@ class Api {
     }
 
     _handleResponse(res) {
-        if(res.ok) {
+        if (res.ok) {
             return res.json();
         } else return Promise.reject(`Ошибка: ${res.status}`);
     }
@@ -27,8 +27,8 @@ class Api {
             .then(this._handleResponse);
     }
 
-    deleteCard(data) {
-        return fetch(`${this._url}/cards/${data._id}`, {
+    deleteCard(id) {
+        return fetch(`${this._url}/cards/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
@@ -61,20 +61,28 @@ class Api {
             .then(this._handleResponse);
     }
 
-    likeCard(data) {
-        return fetch(`${this._url}/cards/likes/${data._id}`, {
+    likeCard(id) {
+        return fetch(`${this._url}/cards/likes/${id}`, {
             method: 'PUT',
             headers: this._headers
         })
             .then(this._handleResponse);
     }
-    
-    unLikeCard(data) {
-        return fetch(`${this._url}/cards/likes/${data._id}`, {
+
+    disLikeCard(id) {
+        return fetch(`${this._url}/cards/likes/${id}`, {
             method: 'DELETE',
             headers: this._headers
         })
             .then(this._handleResponse);
+    }
+
+    changeLikeCardStatus(cardId, status) {
+        if (status) {
+            return this.disLikeCard(cardId);
+        } else {
+            return this.likeCard(cardId);
+        }
     }
 }
 
