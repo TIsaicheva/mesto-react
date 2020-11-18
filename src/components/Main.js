@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from './Card';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import Preloader from './Preloader';
 
 function Main(props) {    
     const currentUser = React.useContext(CurrentUserContext);
@@ -31,12 +32,13 @@ function Main(props) {
                                 card={card}
                                 onCardClick={props.onCardClick}
                                 onCardLike={props.onCardLike}
-                                onCardDelete={props.onCardDelete}
+                                onCardDeleteConfirm={props.onCardDeleteConfirm}
                             />
                         )
                     }
                 </ul>
             </section>
+            {props.showLoader && <Preloader />}
         </>
     );
 }

@@ -20,15 +20,15 @@ function Card(props) {
         props.onCardLike(props.card);
     }
 
-    function handleDeleteClick() {
-        props.onCardDelete(props.card._id);
+    function handleConfirmClick() {
+        props.onCardDeleteConfirm(props.card._id);
     }
 
     return (
         <li className="item">
             <button
                 className={deleteButtonClassName}
-                onClick={handleDeleteClick}>
+                onClick={handleConfirmClick}>
             </button>
             <img src={props.card.link}
                 alt={props.card.name}
