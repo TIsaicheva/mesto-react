@@ -4,7 +4,7 @@ import PopupWithForm from './PopupWithForm';
 function ConfirmationPopup(props) {
     function hadleSubmit(e) {
         e.preventDefault();
-        props.onCardDelete();
+        props.onConfirm();
     }
 
     return (

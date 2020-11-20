@@ -55,13 +55,12 @@ function App() {
             .then(() => {
                 const newCards = cards.filter(i => i._id !== cardId.current);
                 setCards(newCards);
+                closeAllPopups();
             })
             .catch((err) => console.log(err))
             .finally(() => {
                 setIsLoading(false);
             });
-
-        closeAllPopups();
     }
 
     function handleConfirmClick(card_id) {
@@ -98,37 +97,40 @@ function App() {
     function handleUpdateUser(userInfo) {
         setIsLoading(true);
         api.editUserInfo(userInfo)
-            .then((newUserInfo) => setCurrentUser(newUserInfo))
+            .then((newUserInfo) => {
+                setCurrentUser(newUserInfo);
+                closeAllPopups();
+            })
             .catch((err) => console.log(err))
             .finally(() => {
                 setIsLoading(false);
             });
-
-        closeAllPopups();
     }
 
     function handleUpdateAvatar(userAvatar) {
         setIsLoading(true);
         api.changeAvatar(userAvatar)
-            .then((newUserInfo) => setCurrentUser(newUserInfo))
+            .then((newUserInfo) => {
+                setCurrentUser(newUserInfo);
+                closeAllPopups();
+            })
             .catch((err) => console.log(err))
             .finally(() => {
                 setIsLoading(false);
             });
-
-        closeAllPopups();
     }
 
     function handleAddPlaceSubmit(cardInfo) {
         setIsLoading(true);
         api.addCard(cardInfo)
-            .then((newCard) => setCards([newCard, ...cards]))
+            .then((newCard) => {
+                setCards([newCard, ...cards]);
+                closeAllPopups();
+            })
             .catch((err) => console.log(err))
             .finally(() => {
                 setIsLoading(false);
             });
-
-        closeAllPopups();
     }
 
     return (
@@ -160,7 +162,7 @@ function App() {
             <ConfirmationPopup
                 isOpen={isConfirmPopupOpen}
                 onClose={closeAllPopups}
-                onCardDelete={handleCardDelete} />
+                onConfirm={handleCardDelete} />
             <ImagePopup
                 onClose={closeAllPopups}
                 card={selectedCard}

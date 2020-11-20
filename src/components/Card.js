@@ -1,5 +1,6 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import classNames from 'classnames';
 
 function Card(props) {
     const currentUser = React.useContext(CurrentUserContext);
@@ -7,10 +8,10 @@ function Card(props) {
     const isOwner = props.card.owner._id === currentUser._id;
     /* определить, поставил текущий пользователь лайк данной карточке */
     const isLiked = props.card.likes.some(i => i._id === currentUser._id);
-    /* определить класс для кнопки удаления */
-    const deleteButtonClassName = (`item__delete ${isOwner ? '' : 'item__delete_none'}`);
-    /* определить класс для кнопки лайка */
-    const likeIconClassName = (`item__like-icon ${isLiked ? 'item__like-icon_active' : ''}`);
+    /* определить класс для кнопки удаления */   
+    const deleteButtonClassName = classNames('item__delete', {'item__delete_none': !isOwner});
+    /* определить класс для кнопки лайка */    
+    const likeIconClassName = classNames('item__like-icon', {'item__like-icon_active' : isLiked});
 
     function handleClick() {
         props.onCardClick(props.card);
